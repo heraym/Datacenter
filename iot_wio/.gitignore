@@ -1,0 +1,27 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+*.bk
+
+# local scratches
+.local/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+
+# Output of 'npm pack'
+*.tgz
+
+# Provision file
+*.csv
+
