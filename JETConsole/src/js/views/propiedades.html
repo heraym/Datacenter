@@ -1,0 +1,121 @@
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="justifyCenter">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-items oj-sm-12" style="padding-top: 10px;">
+            <div class="oj-flex oj-flex-items-pad">
+                <div id="pageTitleContainer" class="oj-flex-items oj-sm-2 oj-lg-1">
+                    <h1>Propiedades</h1>
+                </div>
+                <div class="oj-flex-items oj-sm-8 oj-lg-9">
+                    <input aria-label="search box" placeholder="buscar" data-bind="value: nameSearch, valueUpdate: 'afterkeydown', ojComponent: {component: 'ojInputText', rootAttributes:{'style':'max-width:400px; margin-left: calc(25vw - 160px)'}}"/>
+                    <div id="searchIcon" class="demo-icon-sprite demo-icon-search demo-search-position"></div>
+                </div>
+                <div class="oj-flex-items oj-sm-2">
+                    <div id="layoutSet" aria-label="Elegir Layout."  style="float: right" data-bind="ojComponent: {component: 'ojButtonset', checked: peopleLayoutType}">
+                        <label for="cardLayout"></label>
+                        <input id="cardLayout" type="radio" name="layoutGroup" value="peopleCardLayout"
+                               data-bind="click: cardLayoutHandler,  ojComponent: {
+                                   component:'ojButton',
+                                   display: 'icons',
+                                   icons: {start:'demo-grid-icon-16 demo-icon-font'},
+                                   label: 'Card'
+                                   }"/>
+                        <label for="listLayout"></label>
+                        <input id="listLayout" type="radio" name="layoutGroup" value="peopleListLayout"
+                               data-bind="click: listLayoutHandler,  ojComponent: {
+                                    component:'ojButton',
+                                    display: 'icons',
+                                    icons: {start:'demo-icon-font demo-list-icon-16'},
+                                    label: 'List'
+                                    }"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- there are two different layouts for displaying the people data. The template binding below sets whether it should load the listView template or the cardLayout template -->
+
+   
+
+ <!-- ko if: ready -->
+    <div id="peoplelistview" >
+        <div class="oj-flex oj-flex-items-pad" data-bind="template: peopleLayoutType()"></div>
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- this is the template content for the cardLayout. It uses standard responsive CSS design and oj-panels for the layout. A Pagination control is used to provide the paging -->
+<script id="peopleCardLayout" type="text/html">
+    <div>
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko foreach: cardViewDataSource()  -->
+            <div class="oj-flex-items oj-sm-12 oj-md-6 oj-lg-4 oj-xl-3" data-bind="event:{keypress:$parent.onEnter}">
+                <div class="oj-panel oj-panel-alt1" style="height: 226px; margin: 5px 0px 10px 0px;" data-bind="click: $parent.loadPersonPage">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-items oj-sm-4">
+                                <img alt="imagen" class="demo-circular demo-employee-photo" data-bind="attr: {src: $parent.getPhoto($data['pais'])}"/>
+                            </div>
+                            <div class="oj-flex-items oj-sm-8">
+                            <h2 class="demo-employee-name" aria-label="Propiedad" data-bind="text: $data['nombre']" tabindex="0"></h2>
+                                <div class="demo-employee-title" data-bind="text: $data['pais']"></div>
+                                <div class="demo-employee-dept" data-bind="text: 'El costo es de $ ' + $data['costo']"></div>
+                                
+                            </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-items oj-sm-4">
+                                </div>
+				<div class="demo-employee-tenure" data-bind="text:$data['nombre']">
+                                <div class="demo-employee-tenure-label">Costo</div>
+                            </div>
+                            
+                        </div>
+                         
+                    </div>
+                </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div id="paging" data-bind="ojComponent: {component: 'ojPagingControl', mode: 'loadMore', data: cardViewPagingDataSource, pageSize: 6}">
+            </div>
+        </div>
+    </script>
+
+    <!-- this is the listLayout template. It uses the ojListView component to do the layout and the pagination. -->
+    <script id="peopleListLayout" type="text/html">
+        <ul id="listview"
+            data-bind="ojComponent: {component: 'ojListView',
+            data: listViewDataSource,
+            item: {template: 'peoplelist_template'},
+            selectionMode: 'single',
+            currentItem: '205',
+            selection: ['205'],
+            optionChange: changeHandler,
+            rootAttributes: {style: 'width:100%;height:600px;overflow:auto; margin-top: 5px'},
+            scrollPolicy: 'loadMoreOnScroll',
+            scrollPolicyOptions: {fetchSize: 10}}">
+        </ul>
+    </script>
+
+    <!-- this is the content that is loaded by the ojListView component above -->
+    <script id="peoplelist_template" type="text/html">
+        <li class="oj-flex-items oj-sm-12" data-bind="click: $parent.loadPersonPage">
+            <div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-items oj-lg-4 oj-md-4">
+                        <img alt="imagen" class="demo-circular demo-employee-photo" style="float:left;" data-bind="attr: {src: $parent.getPhoto($data['pais'])}"/>
+                        <h2 class="demo-employee-name" data-bind="text: $data['nombre']"></h2>
+                        <div class="demo-employee-title" data-bind="text: $data['pais']"></div>
+                        <div class="demo-employee-dept" data-bind="text: 'El costo es de $ ' + $data['costo']"></div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </li>
+    </script>

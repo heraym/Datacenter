@@ -1,0 +1,67 @@
+<!--
+ Copyright (c) 2014, 2017, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="demo-padding demo-container">
+  <h3>Transacciones</h3> 
+<div> <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+        
+        <oj-timeline id='tline' data-bind='attr: {"aria-label": "Single Series Timeline Demo. "}'
+                     minor-axis='{
+                       "scale": "hours",
+                       "zoomOrder": ["hours", "minutes"]
+                     }'
+                     major-axis.scale='quarters'
+                     start='[[fechaDesde]]'
+                     end='[[fechaHasta]]'
+                     selection-mode='single'
+                     reference-objects='[[referenceObjects]]'
+                     selection='["e4"]'
+                     series='[[timelineSeries]]'
+                     style='width:100%;height:350px'>
+        </oj-timeline>
+
+        
+      </div>
+
+
+      <div id="componentDemoContent" style="width: 1px; min-width: 100%;">  <div id="peoplelistview" >
+        <div class="oj-flex oj-flex-items-pad" data-bind="template: transaccionLayoutType()" ></div>
+    </div>      
+  </div>
+  <oj-button id='button1' 
+        data-bind="click: reinicializar" >Reinicializar Juego</oj-button>
+</div>
+
+    <script id="transaccionListLayout" type="text/html">
+        <ul id="listview"
+            data-bind="ojComponent: {component: 'ojListView',
+            data: listViewDataSource,
+            item: {template: 'transaccionlist_template'},
+            selectionMode: 'single',
+            currentItem: '205',
+            selection: ['205'],
+            rootAttributes: {style: 'width:100%;height:600px;overflow:auto; margin-top: 5px'},
+            scrollPolicy: 'loadMoreOnScroll',
+            scrollPolicyOptions: {fetchSize: 10}}">
+        </ul>
+    </script>
+
+    <!-- this is the content that is loaded by the ojListView component above -->
+    <script id="transaccionlist_template" type="text/html">
+        <li class="oj-flex-items oj-sm-8">
+            <div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-items oj-lg-4 oj-md-4">
+                        <img alt="imagen" class="demo-circular demo-employee-photo" style="float:left;" data-bind="attr: {src: $parent.getPhoto($data['partnombre_1'])}"/>
+                        <h2 class="demo-employee-name" data-bind="text: $data['partnombre_1']"></h2>
+                        <div class="demo-employee-title" data-bind="text: $data['dia'] + ' - ' + $data['hora']"></div>
+                        
+                    </div>
+                    <img alt="imagen" class="demo-circular demo-employee-photo"  data-bind="attr: {src: $parent.getPais($data['pais'])}"/>                     
+		    <div class="demo-employee-name" data-bind="text: $data['descripcion']"></div>
+	                        
+                </div>
+            </div>
+        </li>
+    </script>

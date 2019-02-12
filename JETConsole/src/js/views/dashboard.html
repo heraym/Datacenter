@@ -1,0 +1,26 @@
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+
+<!-- this is the template content that is loaded by the MasonryLayout component above  -->
+<div id="sampleDemo" style="" class="demo-padding demo-container">
+      <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+	  <div id="grafico" data-bind="ojComponent: {
+                component: 'ojChart',
+                type: 'area',
+                series: areaSeriesValue,
+                groups: areaGroupsValue, 	
+				orientation: orientationValue,
+				stack: stackValue,
+                animationOnDisplay: 'auto',
+                animationOnDataChange: 'auto',
+                legend: {rendered:'off'}
+            }"
+             style="width:400px; height:300px;">
+        </div>   
+        
+        
+      </div>
+    </div>
+	

@@ -1,0 +1,20 @@
+{
+  "name": "monopoly_core",
+  "version": "0.1.0",
+  "description": "Monopoly Core Services",
+  "author": "Hernan Aymard",
+  "license": "ISC",
+  "repository": {},
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "log4js": "^1.1.1",
+    "underscore": "^1.8.3",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

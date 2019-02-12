@@ -1,0 +1,152 @@
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="justifyCenter">
+    <div id="masonryLayout" data-bind="ojComponent: {component: 'ojMasonryLayout'}">
+        <div id="templateList" data-bind="template: 'dashboardContent'"></div>
+    </div>
+</div>
+
+<!-- this is the template content that is loaded by the MasonryLayout component above  -->
+
+<script type="text/html" id="dashboardContent">
+<div id="MiJuego"  class="oj-masonrylayout-tile-2x2" role="link" tabindex="1" aria-label="Mi Juego">
+    </div>
+    <div id="Juego" class="oj-masonrylayout-tile-2x2" role="link" tabindex="0" aria-label="Juego">
+     <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+        <oj-list-view id="listview" aria-label="list using array" 
+                data="[[dataProvider]]" item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('server_template', true)]]" selection-mode="single">
+        </oj-list-view>      
+     </div>
+
+<div  id="chart-container" style="background-color:white">
+          <h3>Propiedades de los Participantes</h3>
+          <div class="oj-flex oj-sm-flex-items-initial oj-flex-items-pad"  >
+            <div class="oj-flex-item" style="display:inline-block;">
+              <oj-picto-chart  id="pictochart1"
+                  items="[[pictoChartItems1]]"
+                  layout="horizontal"
+                  layout-origin="bottomStart"
+                  column-width="40" row-height="40"
+                  tooltip.renderer="[[tooltipFunction]]"
+                  style="width:100%;max-width:115px; min-height:130px;vertical-align:bottom;display:inline-block;">
+              </oj-picto-chart>
+              <div style="height:20px;font-size:15px;font-weight:bold;text-align:center;">
+                Azul
+              </div>
+              <img alt="imagen" class="demo-circular demo-employee-photo" style="float:left;" src="css/images/usuarios/Azul.png"/>
+            </div>
+            <div class="oj-flex-item" style="display:inline-block;">
+              <oj-picto-chart id='pictochart2' 
+                items="[[pictoChartItems2]]"
+                layout="horizontal"
+                layout-origin="bottomStart"
+                columnCount= "3"
+                column-width="40" row-height="40"
+                tooltip.renderer="[[tooltipFunction]]"
+                style="width:100%;max-width:115px; min-height:130px;vertical-align:bottom;display:inline-block;">
+              </oj-picto-chart>
+              <div style="height:20px;font-size:15px;font-weight:bold;text-align:center;">
+                Rojo
+              </div>
+            </div>
+            <div class="oj-flex-item" style="display:inline-block;">
+              <oj-picto-chart id='pictochart3' 
+                items="[[pictoChartItems3]]"
+                layout="horizontal"
+                layout-origin="bottomStart"
+                column-width="40" row-height="40"
+                tooltip.renderer="[[tooltipFunction]]"
+                style="width:100%;max-width:115px; min-height:130px;vertical-align:bottom;display:inline-block;">
+              </oj-picto-chart>
+              <div style="height:20px;font-size:15px;font-weight:bold;text-align:center;">
+                Azul
+              </div>
+            </div>
+            <div class="oj-flex-item" style="display:inline-block;">
+              <oj-picto-chart id='pictochart4' 
+                items="[[pictoChartItems4]]"
+                layout="horizontal"
+                layout-origin="bottomStart"
+                column-width="40" row-height="40"
+                tooltip.renderer="[[tooltipFunction]]"
+                style="width:100%;max-width:115px; min-height:130px;vertical-align:bottom;display:inline-block;">
+              </oj-picto-chart>
+              <div style="height:20px;font-size:15px;font-weight:bold;text-align:center;width:80px;">
+                Verde
+              </div>
+            </div>
+            
+          </div>
+        </div>
+    </div>
+    
+<div class="demo-padding demo-container">
+  <h3>Transacciones</h3> 
+      <div id="componentDemoContent" style="width: 1px; min-width: 100%;">  <div id="peoplelistview" >
+        <div class="oj-flex oj-flex-items-pad" data-bind="template: transaccionLayoutType()" ></div>
+    </div>      
+  </div>
+</div>
+
+    <script id="transaccionListLayout" type="text/html">
+        <ul id="listview"
+            data-bind="ojComponent: {component: 'ojListView',
+            data: listViewDataSource,
+            item: {template: 'transaccionlist_template'},
+            selectionMode: 'single',
+            currentItem: '205',
+            selection: ['205'],
+            rootAttributes: {style: 'width:100%;height:600px;overflow:auto; margin-top: 5px'},
+            scrollPolicy: 'loadMoreOnScroll',
+            scrollPolicyOptions: {fetchSize: 10}}">
+        </ul>
+    </script>
+
+    <!-- this is the content that is loaded by the ojListView component above -->
+    <script id="transaccionlist_template" type="text/html">
+        <li class="oj-flex-items oj-sm-8">
+            <div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-items oj-lg-4 oj-md-4">
+                        <img alt="imagen" class="demo-circular demo-employee-photo" style="float:left;" data-bind="attr: {src: $parent.getPhoto($data['partnombre_1'])}"/>
+                        <h2 class="demo-employee-name" data-bind="text: $data['partnombre_1']"></h2>
+                        <div class="demo-employee-title" data-bind="text: $data['dia'] + ' - ' + $data['hora']"></div>
+                        
+                    </div>
+                    <img alt="imagen" class="demo-circular demo-employee-photo"  data-bind="attr: {src: $parent.getPais($data['pais'])}"/>                     
+		    <div class="demo-employee-name" data-bind="text: $data['descripcion']"></div>
+	                        
+                </div>
+            </div>
+        </li>
+    </script>
+   
+   
+ </script>
+        <script type="text/html" id="server_template">
+            <li data-bind="attr: {id: $data['id']}">
+                <div class="oj-flex">
+                    <div class="oj-lg-2 oj-md-2 oj-sm-12" style="max-width:70px;padding-bottom:5px">
+                        <img height=80 width=80 data-bind="attr: {src: 'css/images/usuarios/'+ $data['nombre'] +'.png', alt: name}"></img>
+                    </div>
+                    <div class="oj-lg-10 oj-md-10 oj-sm-12">
+                        <div class="oj-flex row">
+                            <div class="oj-lg-12">
+                                <span class="demo-employee-name" data-bind="text: $data['nombre']"></span>
+                            </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-items">
+                                <div class="dinero" data-bind="text:'$' + $data['dinero']"></div>
+                            </div>
+			</div>
+		    </div>
+                    <div class="oj-lg-10 oj-md-10 oj-sm-12">
+                           <div class="oj-flex-items" data-bind="text: 'Propiedades:' + $data['propiedades']">
+                           </div>
+                    </div>
+                </div>
+            </li>
+        </script>

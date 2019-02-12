@@ -20,6 +20,7 @@ exports.wio_node = [
 
   {
     // Light Sensor
+    "board": 0,
     "type": "INPUT",
     "pin": "GroveLuminanceA0",
     "property": "luminance",
@@ -29,6 +30,7 @@ exports.wio_node = [
 
   {
     // IR
+    "board": 0,
     "type": "INPUT",  
     "pin": "GroveIRDistanceInterrupterD0",
     "property": "approach",
@@ -37,6 +39,7 @@ exports.wio_node = [
   },
     {
     // Temperature sensor
+    "board": 0,
     "type": "INPUT",
     "pin": "GroveTempHumD1",
     "property": "temperature",
@@ -45,6 +48,7 @@ exports.wio_node = [
   },
     {
     // Humidity sensor
+    "board": 0,
     "type": "INPUT",
     "pin": "GroveTempHumD1",
     "property": "humidity",
@@ -53,6 +57,7 @@ exports.wio_node = [
   },
    {
     // Dust sensor
+    "board": 0,
     "type": "INPUT",
     "pin": "GroveDustD0",
     "property": "dust",
@@ -61,6 +66,7 @@ exports.wio_node = [
   },
    {
     // Led sensor
+    "board": 0,
     "type": "OUTPUT",
     "pin": "GroveLEDBarUART0",
     "property": "level",
@@ -69,6 +75,7 @@ exports.wio_node = [
   },
    {
     // Led sensor
+    "board": 0,
     "type": "OUTPUT",
     "pin": "GroveLEDBarUART0",
     "property": "bits",
@@ -78,20 +85,16 @@ exports.wio_node = [
 ];
 
 // customize Wio server
-exports.wio_iot1 = {
+exports.wio_iot = [{
   "location": "https://us.wio.seeed.io/",
   "access_token": "d7ed6f3814f6c029e052d27681510371"
-};
-
-exports.wio_iot2 = {
+},{
   "location": "https://us.wio.seeed.io/",
   "access_token": "12530e8cc9fe14d5a852cd9d5e2044fe"
-};
-
-exports.wio_iot3 = {
+},{
   "location": "https://us.wio.seeed.io/",
   "access_token": "763e65621d3a000a49444db1553d793c"
-};
+}];
 
 // customize Wio server
 //exports.wio_iot = {

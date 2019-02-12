@@ -32,14 +32,16 @@ var storePassword = (process.argv[3]);
 // Wio Node board 
 const WioNode = require("./wio.js");
 // Load Wio Node / Wio Link Sensor Config
-const wioConfig1 = require("./sensor-config.js").wio_iot1;
-const wioConfig2 = require("./sensor-config.js").wio_iot2;
-const wioConfig3 = require("./sensor-config.js").wio_iot3;
+const wioConfig = require("./sensor-config.js").wio_iot;
 const sensorConfig = require('./sensor-config.js').wio_node;
 
 // Current Sensor Values - collected from "sensor-config.js" file and populated at run-time
 var currentData = {};
 
+// Esto es para manejar los datos externos - Visual Builder y otros
+var Data_Services = require('./data_services');
+
+var data_services = new Data_Services();
 /*
 For example, after gathering of sensor data:
 var currentData = {
@@ -95,22 +97,14 @@ var deviceCB = function(data, error) {
 function createWioBoard(virtualDev) {
     return new Promise((resolve, reject) => {
         // construct a Wio board
-       var board1 = new WioNode({
+       for (i = 0; i < wioConfig.length; i++) {
+       	 var board = new WioNode({
             "debug": true,
-            "token": wioConfig1.access_token,
-            "location": wioConfig1.location
-        });
-       var board2 = new WioNode({
-            "debug": true,
-            "token": wioConfig2.access_token,
-            "location": wioConfig2.location
-        });
-       var board3 = new WioNode({
-            "debug": true,
-            "token": wioConfig3.access_token,
-            "location": wioConfig3.location
-        });
-        multiboard = { board1, board2, board3};
+            "token": wioConfig[i].access_token,
+            "location": wioConfig[i].location
+         });
+         multiboard.push(board);
+        }
         resolve(multiboard);
     });
 }
@@ -136,7 +130,8 @@ function setupSensors() {
         var bc = writableSensors["soundfreq"];
         var args = param.split('/');
 
-        multiboard.board3.write(deviceCB, bc.pin, bc.property, args[0], args[1]);
+        const i = sensorConfig.find(config => config.property === 'soundfreq');
+        multiboard[i].write(deviceCB, bc.pin, bc.property, args[0], args[1]);
     }; 
 
     //
@@ -153,7 +148,8 @@ function setupSensors() {
         //var bc = writableSensors["bits"];
 		var bc = writableSensors["level"];
 
-        multiboard.board3.write(deviceCB, bc.pin, bc.property, param);
+        const i = sensorConfig.find(config => config.property === 'level');
+        multiboard[i].write(deviceCB, bc.pin, bc.property, param);
     };
 
     // 
@@ -198,7 +194,8 @@ function setupSensors() {
                     currentData[sensor.attr] = sensor.val;
                 }
 
-                if (sensor.property == "temperature" || sensor.property == "dust" || sensor.property == "humidity") { board = multiboard.board2; } else { board = multiboard.board1; }
+                const i = sensorConfig.find(config => config.property === sensor.property);
+                board = multiboard[i];
 				
 				// we stream data every 2 second
                 board.stream(sensor.pin, sensor.property, 2500, (data, error) => {
@@ -272,4 +269,13 @@ function activateDeviceIfNeeded(device) {
             });
         }
     });
+
+function actualizarSensorEnVisualBuilder(currentData) {
+	
+
+var sensor = { "nombre": virtualDev.get("nombre"), "deviceID": virtualDev.get("deviceID"), 
+               "luminance": currentData['luminance'], "temperature": currentData['temperature'], "dust": currentData['dust'], "humidity": currentData['humidity']};
+data_services.actualizarSensor(sensor);
+
+}
 }

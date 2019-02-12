@@ -1,0 +1,2 @@
+ojet build
+ojet serve 
