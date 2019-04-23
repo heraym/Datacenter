@@ -26,7 +26,7 @@ shapeHandler.getValue();
         self.orientationValue = ko.observable('vertical');
         
         /* chart data */
-        var areaSeries = [{ name: "Temperatura", items: temperaturas},{name: "Humedad", items: [0]},{name: "Luminosidad", items: [0]}];
+        var areaSeries = [{ name: "Temperatura", items: [0]},{name: "Humedad", items: [0]},{name: "Luminosidad", items: [0]}];
     
         var areaGroups = ["Temperatura", "Humedad", "Luminosidad"];
    
@@ -111,7 +111,7 @@ shapeHandler.getValue();
           dataType: 'json',
 		  crossDomain: true,
           success: function(result) { generarGrafico(result); },
-          error: function() { alert('boo!'); },
+          error: function(result) { alert(JSON.stringify(result)); },
           beforeSend: setHeader
         });
 		

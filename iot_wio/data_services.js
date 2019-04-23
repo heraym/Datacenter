@@ -3,7 +3,7 @@ var fs = require('fs');
 var Promise = require("bluebird");
 var http = require('https');
 
-var host =  "oicteco-gse00014621.uscom-east-1.oraclecloud.com";
+var host =  "oicdemo-ladsecloudpilot.integration.ocp.oraclecloud.com";
 var port = 443;
 var autorizacion = "Basic aGVybmFuLmVucmlxdWUuYXltYXJkQG9yYWNsZS5jb206VG9tR29uLjExMDc=";
 
@@ -121,7 +121,7 @@ function buscarSensor(sensor, callback) {
                 });
 
           res.on('end', function(d) {
-             //console.log(datos);
+             console.log(datos);
              sensores = JSON.parse(datos);
 
              if (sensores.items.length > 0) {
