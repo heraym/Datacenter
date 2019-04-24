@@ -13,14 +13,11 @@
 "use strict";
 
 // To disable TLS certificate check?
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // TODO: please supply the device model associated with your device
 // For example:  const DEVICE_MODEL_URN = 'urn:com:oracle:iot:wionode:mydevicemodel';
 const DEVICE_MODEL_URN = 'urn:com:oracle:code:iotws:wio';
-
 
 // Setup IoT Device Client Lib
 // IoTCS device library in NodeJS
@@ -38,10 +35,6 @@ const sensorConfig = require('./sensor-config.js').wio_node;
 // Current Sensor Values - collected from "sensor-config.js" file and populated at run-time
 var currentData = {};
 
-// Esto es para manejar los datos externos - Visual Builder y otros
-var Data_Services = require('./data_services');
-
-var data_services = new Data_Services();
 /*
 For example, after gathering of sensor data:
 var currentData = {
@@ -58,7 +51,6 @@ var device = new dcl.device.DirectlyConnectedDevice(storeFile, storePassword);
 var virtualDev;
 
 // Wio board
-var multiboard = [];
 var board;
 
 //
@@ -97,23 +89,20 @@ var deviceCB = function(data, error) {
 function createWioBoard(virtualDev) {
     return new Promise((resolve, reject) => {
         // construct a Wio board
-       var i;
-       for (i = 0; i < wioConfig.length; i++) {
-       	 var board = new WioNode({
-            "debug": false,
-            "token": wioConfig[i].access_token,
-            "location": wioConfig[i].location
-         });
-         multiboard.push(board);
-        }
-        resolve(multiboard);
+        board = new WioNode({
+            "debug": true,
+            "token": wioConfig.access_token,
+            "location": wioConfig.location
+        });
+
+        resolve(board);
     });
 }
 
 //
 // setup sensors for the board based on sensor-config
 function setupSensors() {
-  
+
     // the sensors for handling control signal from IoTCS
     let writableSensors = {};
 
@@ -121,7 +110,6 @@ function setupSensors() {
     // To trigger buzzer sound, the IoTCS backend needs to pass a param in the format of
     // "frequency/duration", such as "443/1000", meaning frequency of 443Hz for 1000 ms
     //
-	
     virtualDev.buzzer.onExecute = function(param) {
         console.log('---------------ON EXECUTE Buzzer -----------------');
         console.log(JSON.stringify({value: param},null,4));
@@ -131,14 +119,12 @@ function setupSensors() {
         var bc = writableSensors["soundfreq"];
         var args = param.split('/');
 
-        const i = sensorConfig.find(config => config.property === 'soundfreq');
-        multiboard[i.board].write(deviceCB, bc.pin, bc.property, args[0], args[1]);
-    }; 
+        board.write(deviceCB, bc.pin, bc.property, args[0], args[1]);
+    };
 
     //
     // To light up LED bar, the IoTCS backend needs to pass an integer number representing the bits
     // For example, "13", which is "0000001101", which will light up bar 1, 3, 4 
-	// chequear el atributo level
     //
     virtualDev.ledbar.onExecute = function(param) {
         console.log('---------------ON EXECUTE LED Bar --------------');
@@ -146,11 +132,9 @@ function setupSensors() {
         console.log('------------------------------------------------');        
 
         // buzzer config
-        //var bc = writableSensors["bits"];
-		var bc = writableSensors["level"];
+        var bc = writableSensors["lightlevel"];
 
-        const i = sensorConfig.find(config => config.property === 'level');
-        multiboard[i.board].write(deviceCB, bc.pin, bc.property, param);
+        board.write(deviceCB, bc.pin, bc.property, param);
     };
 
     // 
@@ -195,22 +179,14 @@ function setupSensors() {
                     currentData[sensor.attr] = sensor.val;
                 }
 
-                var i = sensorConfig.find(config => config.property === sensor.property);
-           
-                board = multiboard[i.board];				
-		     		
                 // we stream data every 2 second
-                board.stream(sensor.pin, sensor.property, 2500, (data, error) => {
+                board.stream(sensor.pin, sensor.property, 10000, (data, error) => {
                     if (error) {
                         console.log("can not read " + sensor.property);
                     }
 
-                   console.log("got data: ", data);
-					//if (data && data["luminance"]) {
-					//if (data["luminance"] < 500) { console.log("*********************************************************"); 
-					//virtualDev.ledbar.onExecute(5.5); } }
-					
-                    if (data && Math.abs(data[sensor.property] - currentData[sensor.attr]) >= 1) {
+                    // console.log("got data: ", data);
+                    if (data && Math.abs(data[sensor.property] - currentData[sensor.attr]) > 1) {
                         currentData[sensor.attr] = data[sensor.property];
 
                         // push to IoTCS
@@ -271,13 +247,4 @@ function activateDeviceIfNeeded(device) {
             });
         }
     });
-
-function actualizarSensorEnVisualBuilder(currentData) {
-	
-
-var sensor = { "nombre": virtualDev.get("nombre"), "deviceID": virtualDev.get("deviceID"), 
-               "luminance": currentData['luminance'], "temperature": currentData['temperature'], "dust": currentData['dust'], "humidity": currentData['humidity']};
-data_services.actualizarSensor(sensor);
-
-}
 }

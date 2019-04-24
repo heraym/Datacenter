@@ -10,7 +10,7 @@
 const property_attribute_mapping = {
     "temperature": "celsius_degree",
     "luminance": "lux",
-	"approach": "approach",
+    "approach": "approach",
 };
 
 const streamDelay = 5000;  // default stream interval: 10000ms
@@ -23,7 +23,7 @@ function WioNode(opts) {
     if (typeof opts == 'undefined') 
         opts = {}
 
-    console.log("called constructor")
+    //console.log("called constructor")
 
     if (typeof opts.debug != 'underfined')
         this.debugMode = opts.debug
@@ -82,7 +82,7 @@ WioNode.prototype.write = function(callback, connector, action, ...details) {
  * property: which data property to read. For example: Temperature & Humidity sensor may have "temperature" and "humidity" properties
  */
 WioNode.prototype.read = function(callback, connector, property) {
-    // console.log("reading wio sensor: ", connector, property);
+//    console.log("reading wio sensor: ", connector, property);
     var self = this;
     this.wioBoard.node.read(this.restToken, connector, property)
         .then(function(data) {
@@ -129,7 +129,7 @@ WioNode.prototype.stream = function(connector, property, delay, callback) {
  *
  */
 WioNode.prototype.stopStream = function(connector, property) {
-    console.log("stopSteam: ", connector, property);
+    //console.log("stopSteam: ", connector, property);
     if( streams[connector+property] !== 'undefined' || streams[connector+property] !== null ) {
         clearInterval( streams[connector+property] );
         streams[connector+property] = null;

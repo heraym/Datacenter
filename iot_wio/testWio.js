@@ -7,6 +7,7 @@ var wioConfig = require("./sensor-config.js").wio_iot;
 // You may want to supply an anonymous function to handle the async callback from Wio board interfaction.
 // in each of you board.write(), board.read() or board.stream() call.
 var callback = function(data, error) {
+  console.log("leeeoooo");
     if( data != null )
         console.log("data->", data);
     if( error != null)
@@ -16,8 +17,8 @@ var callback = function(data, error) {
 // construct a Wio board
 var board = new WioNode({
     "debug": true,
-    "token": wioConfig.access_token,
-    "location": wioConfig.location
+    "token": wioConfig[0].access_token,
+    "location": wioConfig[0].location
 });
 
 
@@ -25,7 +26,7 @@ var board = new WioNode({
 // possible calls to Wio board 
 //
 // write once to buzzer/speaker, to make a sound
-board.write(callback, 'GroveSpeakerD0', 'sound_ms', '443', '1000');
+//board.write(callback, 'GroveSpeakerD0', 'sound_ms', '443', '1000');
 
 // read once luminance from light sensor
 board.read(callback, 'GroveLuminanceA0', 'luminance');
